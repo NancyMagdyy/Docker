@@ -2,20 +2,16 @@ pipeline {
     agent any
 
     stages {
-        stage('f') {
+        stage('Clone Public Repo') {
             steps {
-                // يمسح كل الملفات القديمة في workspace
-                deleteDir()
-
-                // يعمل checkout للـ Git repository اللي معرفاه في إعدادات المشروع
-                checkout scm
+                deleteDir() // يمسح أي ملفات قديمة في الـ workspace
+                git url: 'https://github.com/NancyMagdyy/Docker.git'
             }
         }
 
-        stage('t') {
+        stage('Test Build') {
             steps {
-                // هنا تقدر تكتب أوامر البناء (build)
-                echo 'n'
+                echo '✅ تم تحميل المشروع بنجاح!'
             }
         }
     }
