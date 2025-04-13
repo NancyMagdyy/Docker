@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        stage('nancy') {
+        stage('aya') {
             when {
                 expression{
                     params.project == false
