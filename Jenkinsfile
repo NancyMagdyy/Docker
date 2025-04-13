@@ -1,18 +1,32 @@
 pipeline {
-    agent any
+    agent any 
 
     stages {
-        stage('Clone Public Repo') {
+        stage('check') {
             steps {
-                deleteDir() // يمسح أي ملفات قديمة في الـ workspace
-                git url: 'https://github.com/NancyMagdyy/Docker.git'
+                echo "checking your code"
+                
+               
             }
         }
 
-        stage('Test Build') {
+        stage('docker build') {
             steps {
-                echo '✅ تم تحميل المشروع بنجاح!'
+                echo "building dockerfile"
+                sh "docker build -t nancymagdyy/docker:${env.BUILD_NUMBER} ."
             }
         }
+        
+        stage('docker push') {  
+            steps {
+                echo "docker push is running now"
+                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+                    sh "docker push nancymagdyy/docker:${env.BUILD_NUMBER}"
+                    
+                }
+            }
+        }    
     }
+
 }
