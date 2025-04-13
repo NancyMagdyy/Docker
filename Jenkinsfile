@@ -1,5 +1,9 @@
 pipeline {
-    agent any 
+     agent any
+    parameters {
+        booleanParam(name:'project', defaultValue: true, description:'this paramater help you to know project name')
+        choice(name: 'namespace', choices:['dev','prod','stage'], description: '' ) 
+    }
 
     stages {
         stage('check') {
@@ -10,21 +14,22 @@ pipeline {
             }
         }
 
-        stage('docker build') {
+        stage('test') {
+            when {
+                expression{
+                    params.project == false
+                }
+            }
             steps {
-                echo "building dockerfile"
-                sh "docker build -t nancymagdyy/docker:${env.BUILD_NUMBER} ."
+                echo "testing your app" 
             }
         }
         
-        stage('docker push') {  
+        stage('deployment') {  
             steps {
-                echo "docker push is running now"
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-                    sh "docker push nancymagdyy/docker:${env.BUILD_NUMBER}"
-                    
-                }
+                echo "kubectl apply -f deployment.yaml -n $params.namespace"
+                echo "your code is deployed right now"
+                echo "this build number $BUILD_NUMBER"
             }
         }    
     }
