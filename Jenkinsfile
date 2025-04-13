@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('تنظيف وتحميل المشروع') {
+        stage('f') {
             steps {
                 // يمسح كل الملفات القديمة في workspace
                 deleteDir()
@@ -12,10 +12,10 @@ pipeline {
             }
         }
 
-        stage('البناء') {
+        stage('t') {
             steps {
                 // هنا تقدر تكتب أوامر البناء (build)
-                echo 'بيتم بناء المشروع...'
+                echo 'n'
             }
         }
     }
