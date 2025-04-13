@@ -1,2 +1,2 @@
 #!/bin/bash
-echo "welcome to my page"
+echo "hi everyone"
