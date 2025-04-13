@@ -1,32 +1,36 @@
 pipeline {
-    agent any 
+    agent any
 
     stages {
-        stage('check') {
+        stage('Checkout') {
             steps {
-                echo "checking your code"
-                
-               
+                echo 'Cloning repository...'
+                checkout scm
             }
         }
 
-        stage('docker build') {
+        stage('Build') {
             steps {
-                echo "building dockerfile"
-                sh "docker build -t nancymagdyy/docker:${env.BUILD_NUMBER} ."
+                echo 'Building the project...'
+                // مثال لأمر build بسيط
+                sh 'echo "Build step here"'
             }
         }
-        
-        stage('docker push') {  
+
+        stage('Test') {
             steps {
-                echo "docker push is running now"
-                withCredentials([usernamePassword(credentialsId: 'docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
-                    sh "docker push nancymagdyy/docker:${env.BUILD_NUMBER}"
-                    
-                }
+                echo 'Running tests...'
+                // ممكن تستبدلي الأمر دا بأي أمر تاني حسب نوع مشروعك
+                sh 'echo "Tests go here"'
             }
-        }    
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // أمر النشر البسيط
+                sh 'echo "Deploy step here"'
+            }
+        }
     }
-
 }
