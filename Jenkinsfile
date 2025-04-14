@@ -7,7 +7,7 @@ pipeline {
         stage('Run Script') {
             steps {
                 sh 'chmod +x task.sh'
-                sh 'task.sh'
+                sh './task.sh'
             }
         }
     }
